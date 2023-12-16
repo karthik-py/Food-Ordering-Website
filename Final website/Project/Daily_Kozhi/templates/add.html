@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+</head>
+<body>
+
+  <!-- Product Details Section -->
+  <!-- Product Details Section -->
+<div>
+    <h2>Product Name: Sample Product</h2>
+    <p>Description: This is a sample product description.</p>
+    <p>Price: $19.99</p>
+    <img src="sample-product-image.jpg" alt="Product Image">
+
+    <!-- Wishlist Button -->
+    <button id="addToWishlistBtn"></button>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const addToWishlistBtn = document.getElementById('addToWishlistBtn');
+
+        // Event listener for the "Add to Wishlist" button
+        addToWishlistBtn.addEventListener('click', function () {
+            // Retrieve product details
+            const productName = "Sample Product";
+            const productDescription = "This is a sample product description.";
+            const productPrice = "$19.99";
+            const productImage = "sample-product-image.jpg";
+
+            // Create a product object
+            const product = {
+                name: productName,
+                description: productDescription,
+                price: productPrice,
+                image: productImage
+            };
+
+            // Check if the product is already in the wishlist
+            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            const isProductInWishlist = wishlist.some(item => item.name === productName);
+
+            if (isProductInWishlist) {
+                // If the product is in the wishlist, remove it
+                removeFromWishlist(product);
+            } else {
+                // If the product is not in the wishlist, add it
+                addToWishlist(product);
+            }
+        });
+
+        // Function to add a product to the wishlist
+        function addToWishlist(product) {
+            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            wishlist.push(product);
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+            updateButtonState(true);
+        }
+
+        // Function to remove a product from the wishlist
+        function removeFromWishlist(product) {
+            let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            wishlist = wishlist.filter(item => item.name !== product.name);
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+            updateButtonState(false);
+        }
+
+        // Function to update the button state based on wishlist status
+        function updateButtonState(isInWishlist) {
+            addToWishlistBtn.textContent = isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist';
+        }
+
+        // Check if the product is in the wishlist when the page loads
+        const productName = "Sample Product";
+        const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        const isProductInWishlist = wishlist.some(item => item.name === productName);
+        updateButtonState(isProductInWishlist);
+    });
+</script>
+<a href="wishlist.html">View Wishlist</a>
+
+
+</body>
+</html>
